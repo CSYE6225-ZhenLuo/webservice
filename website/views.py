@@ -1,8 +1,6 @@
-from django.http import JsonResponse
+from sre_parse import State
+from telnetlib import STATUS
+from django.http import JsonResponse, HttpResponse
 
 def healthy(request):
-    data = {
-        'code' : '200',
-        'message' : 'server responds with 200 OK if it is healhty.',
-    }
-    return JsonResponse(data=data)
+    return HttpResponse()
