@@ -24,6 +24,9 @@ After you prepared all the environments and finished the settings for database a
 
 Run Command
 > python manage.py makemigrations
+> 
 > python manage.py migrate
+> 
 > python manage.py runserver
+
 Now you can test the API through localhost:8000\
