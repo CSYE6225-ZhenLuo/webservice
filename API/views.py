@@ -15,7 +15,9 @@ class UserCreate(APIView):
     List all snippets, or create a new snippet.
     """
     def is_valid_data(data):
+
         if len(data)!=4:
+
             return None
         if 'first_name' in data.keys() and 'last_name' in data.keys() and 'username' in data.keys() and 'password' in data.keys():
             return data
@@ -51,6 +53,7 @@ class UserDetail(APIView):
     permission_classes = [IsAuthenticated]
 
     def is_valid_data(data):
+
         if len(data)!=3:
             return None
         if 'first_name' in data.keys() and 'last_name' in data.keys() and 'password' in data.keys():
