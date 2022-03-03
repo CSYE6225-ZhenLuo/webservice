@@ -53,7 +53,6 @@ class UserDetail(APIView):
     permission_classes = [IsAuthenticated]
 
     def is_valid_data(data):
-
         if len(data)!=3:
             return None
         if 'first_name' in data.keys() and 'last_name' in data.keys() and 'password' in data.keys():
