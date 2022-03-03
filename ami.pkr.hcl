@@ -71,11 +71,11 @@ build {
       "sudo yum -y install python3.8",
       "sudo yum -y install python38-devel mysql-devel",
       "sudo yum -y install python38-tkinter.x86_64",
+      "sudo yum -y install httpd httpd-devel",
       "python3.8 -m venv venv",
-      "source venv/bin/activate",
+      "source ~/venv/bin/activate",
 
       "pip install django==4.0.3 djangorestframework==3.13.1 mysqlclient==2.1.0 bcrypt==3.2.0",
-
       "sudo yum -y install https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm",
       "sudo amazon-linux-extras install epel -y",
       "sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022",
@@ -86,11 +86,31 @@ build {
       "mysql -uroot -p$root_password -e \"CREATE DATABASE Django\" --connect-expired-password",
       "mysql -uroot -p$root_password -e \"CREATE USER 'Django'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Django@localhost3306'\" --connect-expired-password",
       "mysql -uroot -p$root_password -e \"GRANT All ON Django.* TO 'Django'@'localhost'\" --connect-expired-password",
-      "cd /tmp/website/",
+      "pip install mod_wsgi==4.9.0",
+      "sudo ~/venv/bin/mod_wsgi-express install-module",
+      "cd /tmp/website",
+
       "python manage.py makemigrations API",
       "python manage.py migrate",
+      "cd /tmp",
+      "sudo cp -r ./website /var/www",
+      "cd /var/www/",
+      "sudo chown -R apache:apache .",
 
-
+      "cd /etc/httpd/conf ",
+      "sudo sed -i '$a LoadModule wsgi_module \"/usr/lib64/httpd/modules/mod_wsgi-py38.cpython-38-x86_64-linux-gnu.so\"' httpd.conf",
+      "sudo sed -i '$a WSGIPythonHome \"/home/ec2-user/venv\"' httpd.conf",
+      "sudo sed -i '$a WSGIScriptAlias / /var/www/website/website/wsgi.py' httpd.conf",
+      "sudo sed -i '$a WSGIPythonPath /var/www/website' httpd.conf",
+      "sudo sed -i '$a WSGIPassAuthorization on' httpd.conf",
+      "sudo sed -i '$a <Directory /var/www/website/website>' httpd.conf",
+      "sudo sed -i '$a <Files wsgi.py>' httpd.conf",
+      "sudo sed -i '$a Require all granted' httpd.conf",
+      "sudo sed -i '$a </Files>' httpd.conf",
+      "sudo sed -i '$a </Directory>' httpd.conf",
+      "cd ~/",
+      "sudo chmod 755 -R /home",
+      "sudo systemctl enable --now httpd",
     ]
   }
 }
