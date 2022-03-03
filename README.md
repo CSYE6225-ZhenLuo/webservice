@@ -33,3 +33,5 @@ Now you can test the API through localhost:8000
 
 ## AMI use
 use packer to build your AMI
+
+give a try
