@@ -57,10 +57,10 @@ build {
 
   provisioner "file" {
     sources      = [
-      "/API",
-      "/website",
-      "manage.py",
-      "requirements.txt"
+      "./API",
+      "./website",
+      "./manage.py",
+      "./requirements.txt"
     ]
     destination = "/tmp"
   }
