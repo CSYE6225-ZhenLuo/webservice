@@ -87,7 +87,7 @@ build {
       "mysql -uroot -p$root_password -e \"CREATE USER 'Django'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Django@localhost3306'\" --connect-expired-password",
       "mysql -uroot -p$root_password -e \"GRANT All ON Django.* TO 'Django'@'localhost'\" --connect-expired-password",
       "cd /tmp/website/",
-      "python manage.py makemigrations",
+      "python manage.py makemigrations API",
       "python manage.py migrate",
 
 
