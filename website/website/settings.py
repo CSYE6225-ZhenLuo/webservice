@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-6=y#@6uz*hk)-ex4vx*(_yz=4j)!u_8^t!ydh0kzn680&*@mvq
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
+
+    '*',
 ]
 
 # Turn off the Admin system
