@@ -11,12 +11,12 @@ variable "aws_region" {
 variable "aws_secret_key" {
   type    = string
   default = ""
-
+}
 
 variable "source_ami" {
   type    = string
   default = "ami-048ff3da02834afdc"
-
+}
 
 variable "ssh_username" {
   type    = string
