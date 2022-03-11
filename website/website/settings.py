@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-6=y#@6uz*hk)-ex4vx*(_yz=4j)!u_8^t!ydh0kzn680&*@mvq'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't runimport os with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = [
@@ -88,17 +88,28 @@ WSGI_APPLICATION = 'website.wsgi.application'
 # }
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Django',
-        'USER': 'Django',
-        'PASSWORD': 'Django@localhost3306',
-        'HOST' : 'localhost',
-        'PORT' : '3306',
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'Django',
+#         'USER': 'Django',
+#         'PASSWORD': 'Django@localhost3306',
+#         'HOST' : 'localhost',
+#         'PORT' : '3306',
+#     }
+# }
+import os
+if 'RDS_HOSTNAME' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+        }
     }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

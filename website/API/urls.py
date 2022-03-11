@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path('user/self/pic', views.UserPic.as_view()),
     path('user/self/', views.UserDetail.as_view()),
-    path('user/', views.UserCreate.as_view())
+    path('user/', views.UserCreate.as_view()),
 ]
