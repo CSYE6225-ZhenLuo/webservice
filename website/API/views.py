@@ -1,13 +1,15 @@
-from datetime import datetime
-from API.models import MyUser
-from API.serializers import MyUserSerializer
+from datetime import date
+import datetime
+from API.models import MyUser, UserPicture
+from API.serializers import MyUserSerializer, ImageSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.views import APIView
-
+import os
+import boto3
 # Create your views here.
 
 class UserCreate(APIView):
@@ -47,7 +49,7 @@ class UserCreate(APIView):
         return Response(data, status=status.HTTP_201_CREATED)
 class UserDetail(APIView):
     """
-    Retrieve, update or delete a snippet instance.
+    Retrieve, update a user data.
     """
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
@@ -84,3 +86,95 @@ class UserDetail(APIView):
             user.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class UserPic(APIView):
+    """
+    Retrieve, update a user data.
+    """
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    #parser_classes = [FileUploadParser,]
+
+
+
+    def post(self, request, format=None):
+        user = request.user
+        serializer = MyUserSerializer(user)
+
+            
+        file_obj = request.FILES['profilePic']
+        s3 = boto3.client('s3')
+        #     aws_access_key_id='AKIAZAJCF6G3BKJGRSCK',
+        #     aws_secret_access_key='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'
+        # )
+
+        bucketname=os.environ['S3_Bucket_Name']
+        #bucketname=usedforcsye6225zhenluodeveloptest'
+        folder = str(serializer.data['id'])+'/'
+        if UserPicture.objects.filter(user_id=serializer.data['id']).count() == 1:
+            pic = UserPicture.objects.get(user_id=serializer.data['id'])
+            Picserializer = ImageSerializer(pic)
+            
+            response = s3.delete_object(
+                Bucket=bucketname,
+                Key=folder+Picserializer.data['file_name']
+            )
+        
+            pic.delete()
+
+        s3.upload_fileobj(file_obj, bucketname, folder+file_obj._name)
+        picURL='https://'+bucketname+'.s3.amazonaws.com/'+folder+file_obj._name
+        pic = UserPicture(id=serializer.data['id'], file_name=file_obj._name, user_id=serializer.data['id'],url=picURL,upload_date=date.today())
+        pic.save()
+        Picserializer = ImageSerializer(pic)
+        data={
+            'id':Picserializer.data['id'],
+            'file_name': Picserializer.data['file_name'],
+            'url': Picserializer.data['url'],
+            'upload_date': Picserializer.data['upload_date'],
+            'user_id': Picserializer.data['user_id'],
+        }
+        return Response(data, status=status.HTTP_201_CREATED)
+
+
+    def get(self,request,format=None):
+        user = request.user
+        serializer = MyUserSerializer(user)
+
+        if UserPicture.objects.filter(user_id=serializer.data['id']).count() == 0:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        pic = UserPicture.objects.get(user_id=serializer.data['id'])
+        Picserializer = ImageSerializer(pic)
+        data={
+            'id':Picserializer.data['id'],
+            'file_name': Picserializer.data['file_name'],
+            'url': Picserializer.data['url'],
+            'upload_date': Picserializer.data['upload_date'],
+            'user_id': Picserializer.data['user_id'],
+        }
+        return Response(data, status=status.HTTP_200_OK)
+
+    def delete(self,request,format=None):
+        user = request.user
+        serializer = MyUserSerializer(user)
+
+        if UserPicture.objects.filter(user_id=serializer.data['id']).count() == 0:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        pic = UserPicture.objects.get(user_id=serializer.data['id'])
+        Picserializer = ImageSerializer(pic)
+        s3 = boto3.client('s3')
+            # aws_access_key_id='AKIAZAJCF6G3BKJGRSCK',
+            # aws_secret_access_key='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'
+            # )
+        bucketname=os.environ['S3_Bucket_Name']
+        #bucketname=usedforcsye6225zhenluodeveloptest'
+        folder = str(serializer.data['id'])+'/'
+        response = s3.delete_object(
+            Bucket=bucketname,
+            Key=folder+Picserializer.data['file_name']
+        )
+        
+        pic.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
