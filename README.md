@@ -35,6 +35,7 @@ Run Command
 > python manage.py makemigrations
 > 
 > python manage.py migrate
+> 
 > python manage.py runserver
 
 Now you can test the API through localhost:8000
