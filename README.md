@@ -35,11 +35,12 @@ Run Command
 > python manage.py makemigrations
 > 
 > python manage.py migrate
-> 
 > python manage.py runserver
 
 Now you can test the API through localhost:8000
-
+aaa
 ## AMI use
 use packer to build your AMI
 
+export AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY 
+export AWS_SECRET_ACCESS_KEY=YOUR_SECRET_KEY
