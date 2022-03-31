@@ -2,8 +2,8 @@ name: Django CD
 
 env:
   ARTIFACT_NAME: csye6225-webapp-${{ github.sha }}.zpi
-  CODEDEPLOY_APPLICATION_NAME: mywebapp
-  CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME: mywebapp
+  CODEDEPLOY_APPLICATION_NAME: csye6225-webapp
+  CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME: csye6225-webapp-deployment
   AWS_REGION: us-east-1
 
 on:
@@ -27,6 +27,16 @@ jobs:
     
     - name: Zip Deployment Artifact
       run: |
+        mkdir codedeploy_artifact
+        pwd
+        zip -r ${{ env.ARTIFACT_NAME }} ./website codedeploy/*.sh appspec.yml
+        pwd
+        mv ${{env.ARTIFACT_NAME}} codedeploy_artifact/
+        ls -al
+        cd codedeploy_artifact
+        ls -al
+        cd ..
+        pwd
 
 
 

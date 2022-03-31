@@ -45,3 +45,9 @@ use packer to build your AMI
 
 export AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY 
 export AWS_SECRET_ACCESS_KEY=YOUR_SECRET_KEY
+
+
+packer init .
+packer fmt .
+packer validate .
+packer build

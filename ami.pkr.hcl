@@ -57,7 +57,7 @@ build {
 
   provisioner "file" {
     source      = "./website"
-    destination = "/var/www/"
+    destination = "/tmp/"
   }
   provisioner "shell" {
     inline = [
@@ -80,7 +80,8 @@ build {
       "pip install boto3==1.21.16",
       "pip install mod_wsgi==4.9.0",
       "sudo ~/venv/bin/mod_wsgi-express install-module",
-
+      "cd /tmp",
+      "sudo cp -r ./website /var/www",
       "cd /var/www/",
       "sudo chown -R apache:apache .",
 
@@ -97,7 +98,11 @@ build {
       "sudo sed -i '$a </Directory>' httpd.conf",
       "cd ~/",
       "sudo chmod 755 -R /home",
-
+      "cd /home/ec2-user",
+      "wget https://codedeploy-zhenluo-demo.s3.us-east-1.amazonaws.com/latest/install",
+      "chmod +x ./install",
+      "sudo ./install auto",
+      "sudo service codedeploy-agent start",
     ]
   }
 }
