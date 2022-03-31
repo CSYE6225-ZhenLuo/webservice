@@ -20,7 +20,10 @@ You need a MySqlServer version:8.0.28(Other version haven't been tested)
 You should create a schema named "Django"
 You should also create a user        
 'USER': 'Django',
-'PASSWORD': 'Django@localhost3306',
+'PASSWORD': 'Django@localhost3306',x-special/nautilus-clipboard
+copy
+file:///tmp/VMwareDnD/VMHnAF/AWS-demo.pem
+
 'HOST' : 'localhost',
 'PORT' : '3306'
 and grant privilege on Django.* to this user.
@@ -36,8 +39,15 @@ Run Command
 > python manage.py runserver
 
 Now you can test the API through localhost:8000
-
+aaa
 ## AMI use
 use packer to build your AMI
 
-give a try
+export AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY 
+export AWS_SECRET_ACCESS_KEY=YOUR_SECRET_KEY
+
+
+packer init .
+packer fmt .
+packer validate .
+packer build
