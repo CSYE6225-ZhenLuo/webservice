@@ -15,7 +15,7 @@ variable "aws_secret_accesss_key" {
 
 variable "source_ami" {
   type    = string
-  default = "ami-048ff3da02834afdc"
+  default = "ami-0c02fb55956c7d316"
 }
 
 variable "ssh_username" {
@@ -57,11 +57,15 @@ build {
 
   provisioner "file" {
     source      = "./website"
-    destination = "/tmp/"
+    destination = "/var/www/"
   }
   provisioner "shell" {
     inline = [
       "sudo yum -y update",
+
+
+      "sudo yum -y install ruby",
+      "sudo yum -y install wget",
       "sudo yum -y groupinstall \"Development Tools\"",
       "sudo yum -y install -y amazon-linux-extras",
       "sudo amazon-linux-extras enable python3.8",
@@ -77,9 +81,6 @@ build {
       "pip install mod_wsgi==4.9.0",
       "sudo ~/venv/bin/mod_wsgi-express install-module",
 
-
-      "cd /tmp",
-      "sudo cp -r ./website /var/www",
       "cd /var/www/",
       "sudo chown -R apache:apache .",
 
