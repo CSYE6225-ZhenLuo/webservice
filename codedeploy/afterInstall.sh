@@ -1,4 +1,5 @@
 #!/bin/bash
-
-sudo chown -R Apache.Apache /var/www/website
+cd /var/www
+sudo chown -R apache.apache website
+cd /home/ec2-user
 sudo systemctl restart httpd.service
