@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /var/www/website/website
-cp wsgi.py /home
+cp wsgi.py /home/ec2-user
 cd /var/www/
 sudo rm -rf website
 mkdir website
