@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /home/ec2-user
-sudo rm -rf wsgi.py
+sudo rm wsgi.py
 cd /var/www/website/website
 cp wsgi.py /home/ec2-user
 cd /var/www/
