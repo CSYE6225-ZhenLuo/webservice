@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: ./website
-    destination: /var/www/
+    destination: /var/www/website/
   
 hooks:
   AfterInstall:
