@@ -10,8 +10,11 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.views import APIView
 import os
 import boto3
-# Create your views here.
 
+# Create statsD obj for cloudwatch
+import statsd
+
+# Create your views here.
 class UserCreate(APIView):
     """
     List all snippets, or create a new snippet.
@@ -27,6 +30,11 @@ class UserCreate(APIView):
         
 
     def post(self, request, format=None):
+        
+        counter = statsd.Counter('APICounter')
+        counter.increment('CreateUserCall')
+        counter.increment('TotalCall')
+
         data=UserCreate.is_valid_data(request.data.dict())
         if data is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -62,6 +70,11 @@ class UserDetail(APIView):
         return None
 
     def get(self, request):
+        
+        counter = statsd.Counter('APICounter')
+        counter.increment('GetUserCall')
+        counter.increment('TotalCall')
+
         user=request.user
         serializer = MyUserSerializer(user)
         data={
@@ -76,6 +89,11 @@ class UserDetail(APIView):
 
         
     def put(self, request, format=None):
+        
+        counter = statsd.Counter('APICounter')
+        counter.increment('UpdateUserCall')
+        counter.increment('TotalCall')
+        
         user = request.user
         data=UserDetail.is_valid_data(request.data.dict())
         if data is not None:
@@ -96,9 +114,12 @@ class UserPic(APIView):
 
     #parser_classes = [FileUploadParser,]
 
-
-
     def post(self, request, format=None):
+        
+        counter = statsd.Counter('APICounter')
+        counter.increment('UploadPictureCall')
+        counter.increment('TotalCall')
+
         user = request.user
         serializer = MyUserSerializer(user)
 
@@ -139,6 +160,11 @@ class UserPic(APIView):
 
 
     def get(self,request,format=None):
+
+        counter = statsd.Counter('APICounter')
+        counter.increment('GetPictureCall')
+        counter.increment('TotalCall')
+
         user = request.user
         serializer = MyUserSerializer(user)
 
@@ -156,6 +182,11 @@ class UserPic(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
     def delete(self,request,format=None):
+
+        counter = statsd.Counter('APICounter')
+        counter.increment('DeletePictureCall')
+        counter.increment('TotalCall')
+
         user = request.user
         serializer = MyUserSerializer(user)
 
