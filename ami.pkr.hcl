@@ -59,6 +59,14 @@ build {
     source      = "./website"
     destination = "/tmp/"
   }
+  provisioner "file" {
+    source      = "./requirements.txt"
+    destination = "/tmp/"
+  }
+  provisioner "file" {
+    source      = "./amazon-cloudwatch-config.json"
+    destination = "/tmp/"
+  }
   provisioner "shell" {
     inline = [
       "sudo yum -y update",
@@ -76,12 +84,13 @@ build {
       "python3.8 -m venv venv",
       "source ~/venv/bin/activate",
 
-      "pip install django==4.0.3 djangorestframework==3.13.1 mysqlclient==2.1.0 bcrypt==3.2.0",
-      "pip install boto3==1.21.16",
-      "pip install mod_wsgi==4.9.0",
-      "sudo ~/venv/bin/mod_wsgi-express install-module",
+
+      
       "cd /tmp",
+      "pip install -r requirements.txt",
+      "sudo ~/venv/bin/mod_wsgi-express install-module",
       "sudo cp -r ./website /var/www",
+      "sudo cp amazon-cloudwatch-config.json /opt",
       "cd /var/www/",
       "sudo chown -R apache:apache .",
 
@@ -102,6 +111,7 @@ build {
       "wget https://aws-codedeploy-us-east-1.s3.us-east-1.amazonaws.com/latest/install",
       "chmod +x ./install",
       "sudo ./install auto",
+      "sudo yum -y install amazon-cloudwatch-agent",
       "sudo service codedeploy-agent start",
     ]
   }
