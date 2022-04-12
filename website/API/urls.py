@@ -21,5 +21,5 @@ urlpatterns = [
     path('user/self/pic', views.UserPic.as_view()),
     path('user/self/', views.UserDetail.as_view()),
     path('user/', views.UserCreate.as_view()),
-    path('verifyUserEmail/', )
+    path('verifyUserEmail/', views.VarifyEmail.as_view() ),
 ]
