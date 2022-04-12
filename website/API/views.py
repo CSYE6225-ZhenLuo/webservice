@@ -88,7 +88,7 @@ class UserCreate(APIView):
         )
 
 
-        sns_client = boto3.client('sns')
+        sns_client = boto3.client('sns',region_name='us-east-1')
         sns_client.publish(
             TopicArn = os.environ['TOPIC_ARN'],
             Message = 'Email:' + data['username'] + ':Token:' + token,
@@ -185,7 +185,7 @@ class UserPic(APIView):
             return Response(status=status.HTTP_403_FORBIDDEN)
             
         file_obj = request.FILES['profilePic']
-        s3 = boto3.client('s3')
+        s3 = boto3.client('s3',region_name='us-east-1')
 
 
         bucketname=os.environ['S3_Bucket_Name']
@@ -257,7 +257,7 @@ class UserPic(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         pic = UserPicture.objects.get(user_id=serializer.data['id'])
         Picserializer = ImageSerializer(pic)
-        s3 = boto3.client('s3')
+        s3 = boto3.client('s3',region_name='us-east-1')
             # aws_access_key_id='AKIAZAJCF6G3BKJGRSCK',
             # aws_secret_access_key='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'
             # )
