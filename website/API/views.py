@@ -27,7 +27,7 @@ class VarifyEmail(APIView):
         data = request.GET
         user_email = data['email']
         token = data['token']
-        dynamodb = boto3.resource('dynamodb')
+        dynamodb = boto3.resource('dynamodb',region_name='us-east-1')
         table = dynamodb.Table('EmailValidTable')
         response = table.get_item(
             Key={
@@ -77,7 +77,7 @@ class UserCreate(APIView):
         token = secrets.token_urlsafe(20)
         TTL = int((datetime.datetime.now() + datetime.timedelta(minutes=5)).timestamp())
 
-        dynamodb = boto3.resource('dynamodb')
+        dynamodb = boto3.resource('dynamodb',region_name='us-east-1')
         table = dynamodb.Table('EmailValidTable')
         table.put_item(
             Item={

@@ -19,6 +19,6 @@ from . import views
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
-    path('healthyyy', views.healthy, name='healthy'),
+    path('healthz', views.healthy, name='healthy'),
     path('v1/', include('API.urls')),
 ]
