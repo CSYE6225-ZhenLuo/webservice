@@ -9,7 +9,8 @@ class MyUserSerializer(serializers.Serializer):
     account_updated = serializers.DateTimeField()
     account_created = serializers.DateTimeField()
     password = serializers.CharField(read_only=True)
-    username= serializers.CharField()
+    username = serializers.CharField()
+    is_valid = serializers.BooleanField()
 
     def create(self, validated_data):
         """

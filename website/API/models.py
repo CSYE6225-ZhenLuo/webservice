@@ -10,7 +10,8 @@ class MyUser(AbstractUser):
     email = models.EmailField(unique=True)
     account_updated = models.DateTimeField(auto_now=True)
     account_created = models.DateTimeField(auto_now_add=True)
-    
+    is_valid = models.BooleanField()
+
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
