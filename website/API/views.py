@@ -31,13 +31,12 @@ class VarifyEmail(APIView):
         table = dynamodb.Table('EmailValidTable')
         response = table.get_item(
             Key={
-                'EmailAddress': user_email
+                'EmailAddress': user_email,
+                'Token': token
             }
         )
         item = response['Item']
         if item == None:
-            return response(status=status.HTTP_403_FORBIDDEN)
-        if item['token'] != token:
             return response(status=status.HTTP_403_FORBIDDEN)
         return response(status=status.HTTP_200_OK)
 
@@ -95,16 +94,17 @@ class UserCreate(APIView):
         )
 
 
-        serializer = MyUserSerializer(user)
-        data={
-            'id':serializer.data['id'],
-            'username': serializer.data['email'],
-            'first_name': serializer.data['first_name'],
-            'last_name': serializer.data['last_name'],
-            'account_created': serializer.data['account_created'],
-            'account_updated': serializer.data['account_updated'],
-            }
-        return Response(data, status=status.HTTP_201_CREATED)
+        # serializer = MyUserSerializer(user)
+        # data={
+        #     'id':serializer.data['id'],
+        #     'username': serializer.data['email'],
+        #     'first_name': serializer.data['first_name'],
+        #     'last_name': serializer.data['last_name'],
+        #     'account_created': serializer.data['account_created'],
+        #     'account_updated': serializer.data['account_updated'],
+        #     }
+        # return Response(data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_201_CREATED)
 class UserDetail(APIView):
     """
     Retrieve, update a user data.
