@@ -35,9 +35,9 @@ class VarifyEmail(APIView):
         item = response['Item']
         if item == None:
             return Response(status=status.HTTP_403_FORBIDDEN)
-        email = item['EmailAddress']
-        user = MyUser.objects.get(username=email)
-        user.isvalid = True
+        user = MyUser.objects.get(username=user_email)
+        user.is_valid = True
+        user.save()
         return Response(status=status.HTTP_200_OK)
 
 
@@ -158,7 +158,7 @@ class UserDetail(APIView):
             user.set_password(data['password'])
             user.first_name=data['first_name']
             user.last_name=data['last_name']
-            user.account_updated=datetime.now()
+            user.account_updated=datetime.datetime.now()
             user.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
