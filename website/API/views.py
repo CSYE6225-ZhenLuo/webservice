@@ -1,8 +1,5 @@
 from datetime import date
 import datetime
-import email
-from email.message import Message
-import time
 from API.models import MyUser, UserPicture
 from API.serializers import MyUserSerializer, ImageSerializer
 from rest_framework.views import APIView
@@ -37,8 +34,11 @@ class VarifyEmail(APIView):
         )
         item = response['Item']
         if item == None:
-            return response(status=status.HTTP_403_FORBIDDEN)
-        return response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        email = item['EmailAddress']
+        user = MyUser.objects.get(username=email)
+        user.isvalid = True
+        return Response(status=status.HTTP_200_OK)
 
 
 
