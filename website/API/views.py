@@ -33,7 +33,7 @@ class VarifyEmail(APIView):
             }
         )
         item = response['Item']
-        ttl = response['TTL']
+        ttl = item['TTL']
         if item == None:
             return Response(status=status.HTTP_403_FORBIDDEN)
         if ttl < int(datetime.datetime.now()):
