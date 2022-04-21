@@ -36,7 +36,7 @@ class VarifyEmail(APIView):
         ttl = item['TTL']
         if item == None:
             return Response(status=status.HTTP_403_FORBIDDEN)
-        if ttl < int(datetime.datetime.now()):
+        if ttl < int(datetime.datetime.now().timestamp()):
             return Response(status=status.HTTP_403_FORBIDDEN)
         user = MyUser.objects.get(username=user_email)
         user.is_valid = True
