@@ -67,6 +67,10 @@ build {
     source      = "./amazon-cloudwatch-config.json"
     destination = "/tmp/"
   }
+  provisioner "file" {
+    source      = "./us-east-1-bundle.pem"
+    destination = "/tmp/"
+  }
   provisioner "shell" {
     inline = [
       "sudo yum -y update",
@@ -90,6 +94,7 @@ build {
       "pip install -r requirements.txt",
       "sudo ~/venv/bin/mod_wsgi-express install-module",
       "sudo cp -r ./website /var/www",
+      "sudo cp us-east-1-bundle.pem /var/www",
       "sudo cp amazon-cloudwatch-config.json /opt",
       "cd /var/www/",
       "sudo chown -R apache:apache .",
